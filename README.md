@@ -70,6 +70,7 @@ Use the `cd` command to navigate to the folder where your project and `requireme
 For example:
 ```bash
 cd path\to\your\project
+```
 
 ## **For Mac/Linux:**
 
