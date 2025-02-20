@@ -1,5 +1,9 @@
 # Required Files
 
+Install the following required files and store them in the **data/** folder.
+
+---
+
 - **Train File**:  
   [Download Train File](https://drive.usercontent.google.com/download?id=1_WqUew2CdIfAY2oPh7kOZqgtXDtLa6CN&export=download&authuser=0)
   
@@ -33,8 +37,6 @@
 1. Click the following link to download the test file:  
    [Download Test File](https://datahack-prod.s3.amazonaws.com/test_file/test_Rj9YEaI.csv)
 2. The file will begin downloading automatically. If prompted, choose the location to save the file.
-
----
 
 # Move downloaded files into project
 
