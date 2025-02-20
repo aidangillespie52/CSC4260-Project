@@ -14,8 +14,6 @@ Install the following required files and store them in the **data/** folder.
 
 ---
 
-# 💻 Windows Instructions
-
 ## **Step 1: Download the Train File**
 1. Click the following link:  
    [📥 Download Train File](https://drive.usercontent.google.com/download?id=1_WqUew2CdIfAY2oPh7kOZqgtXDtLa6CN&export=download&authuser=0)
