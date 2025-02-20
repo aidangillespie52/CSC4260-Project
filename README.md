@@ -80,6 +80,7 @@ cd path\to\your\project
 ### Step 2: Navigate to Your Project Directory
 ```bash
 cd /path/to/your/project
+```
 
 # Activate your environment
 
@@ -88,8 +89,10 @@ To activate your python environment do
 ```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
 ### Step 2: Install necessary packages
 To install necessary packages run
 ```bash
 pip install -r requirements.txt
+```
