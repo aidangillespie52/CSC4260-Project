@@ -82,7 +82,7 @@ cd path\to\your\project
 cd /path/to/your/project
 ```
 
-# Activate your environment
+# Environment Set Up
 
 ### Step 1: Activate your environment
 To activate your python environment do
