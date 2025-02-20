@@ -45,12 +45,12 @@
 
 ## Your Data Folder Should Look Like This
 
-project_directory/
-│── data/
-│   ├── image_data/
-│   ├── bbox_train.csv
-│   ├── train.csv
-│   ├── test.csv
+project_directory/<br>
+│── data/<br>
+│   ├── image_data/<br>
+│   ├── bbox_train.csv<br>
+│   ├── train.csv<br>
+│   ├── test.csv<br>
 
 
 # Setting up the Environment and Installing Dependencies
