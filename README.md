@@ -62,6 +62,8 @@ project_directory/
 │   ├── test.csv
 ```
 
+---
+
 # ⚙️ Setting up the Environment and Installing Dependencies
 
 Follow these instructions to set up a **virtual environment** and install the required libraries for the project using `pip`.
@@ -91,6 +93,8 @@ cd path\to\your\project
 cd /path/to/your/project
 ```
 
+---
+
 # 🔧 Environment Set Up
 
 ### **Step 1: Activate Your Environment**
@@ -99,10 +103,10 @@ To activate your Python environment, run:
 python -m venv venv
 venv\Scripts\activate  # Windows
 source venv/bin/activate  # Mac/Linux
+```
 
-
-### Step 2: Install necessary packages
-To install necessary packages run
+### **Step 2: Install necessary packages**
+To install necessary packages run:
 ```bash
 pip install -r requirements.txt
 ```
