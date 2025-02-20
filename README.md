@@ -28,20 +28,6 @@ Install the following required files and store them in the **data/** folder.
 
 ---
 
-# 🍏 Mac/Linux Instructions
-
-## **Step 1: Download the Train File**
-1. Click the following link:  
-   [📥 Download Train File](https://drive.usercontent.google.com/download?id=1_WqUew2CdIfAY2oPh7kOZqgtXDtLa6CN&export=download&authuser=0)
-2. The file will begin downloading automatically. If prompted, choose a location to save it.
-
-## **Step 2: Download the Test File**
-1. Click the following link:  
-   [📥 Download Test File](https://datahack-prod.s3.amazonaws.com/test_file/test_Rj9YEaI.csv)
-2. The file will begin downloading automatically. If prompted, choose a location to save it.
-
----
-
 # 📁 Move Downloaded Files into the Project
 
 ## **Step 1: Create the `data/` Folder**
