@@ -1,12 +1,21 @@
 # load_data.py
 
 # Imports
-import matplotlib.pyplot as plt
-from torch.utils.data import Dataset, DataLoader
-import pandas as pd
-from PIL import Image
-import torchvision.transforms as transforms
+
+# Needed for grabbing local python files
 import os
+
+# Needed for ML
+import torch
+import pandas as pd
+
+# Used for creating dataset and changing it as necessary
+from torch.utils.data import Dataset
+import torchvision.transforms as transforms
+
+# Needed for plotting images
+import matplotlib.pyplot as plt
+from PIL import Image
 
 # Paths
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
@@ -26,10 +35,11 @@ class Train_Dataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = os.path.join(IMAGE_DATA_PATH, self.data.iloc[idx, 0])
-        label = int(self.data.iloc[idx, 1])
-
         image = Image.open(img_path).convert("RGB")
         
+        label = float(self.data.iloc[idx, 1])  
+        label = torch.tensor(label, dtype=torch.float32)
+
         if self.transform:
             image = self.transform(image)
 
