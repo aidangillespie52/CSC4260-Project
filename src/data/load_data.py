@@ -24,11 +24,15 @@ TRAIN_CSV_PATH = os.path.normpath(os.path.join(PROJECT_ROOT, "data/train.csv"))
 BOX_TRAIN_CSV_PATH = os.path.normpath(os.path.join(PROJECT_ROOT, "data/bbox_train.csv"))
 IMAGE_DATA_PATH = os.path.normpath(os.path.join(PROJECT_ROOT, "data/image_data/"))
 
-# Image Dataset for training
 class Train_Dataset(Dataset):
-    def __init__(self, csv_file, transform=None):
-        self.data = pd.read_csv(csv_file)
+    def __init__(self, transform=None):
+        self.data = pd.read_csv(TRAIN_CSV_PATH)
         self.transform = transform
+
+        # Ensure that all files within img folder actually exist
+        self.data = self.data[self.data['Name'].apply(
+            lambda img: os.path.exists(os.path.join(IMAGE_DATA_PATH, img))
+        )].reset_index(drop=True)
 
     def __len__(self):
         return len(self.data)
@@ -59,8 +63,8 @@ class Train_Dataset(Dataset):
         plt.show()
 
 class Test_Dataset(Dataset):
-    def __init__(self, csv_file, transform=None):
-        self.data = pd.read_csv(csv_file)
+    def __init__(self, transform=None):
+        self.data = pd.read_csv(TEST_CSV_PATH)
         self.transform = transform
 
     def __len__(self):
@@ -90,6 +94,53 @@ class Test_Dataset(Dataset):
         plt.axis('off')  # Hide axes for better visualization
         plt.show()
 
+class ObjectDetectionDataset(Dataset):
+    def __init__(self, transforms=None):
+        self.annotations = pd.read_csv(BOX_TRAIN_CSV_PATH)
+        self.image_dir = IMAGE_DATA_PATH
+        self.transforms = transforms
+
+        self.annotations = self.annotations[self.annotations['Name'].apply(
+            lambda img: os.path.exists(os.path.join(self.image_dir, img))
+        )]
+
+        self.image_filenames = self.annotations['Name'].unique()
+
+    def __len__(self):
+        return len(self.image_filenames)
+
+    def __getitem__(self, idx):
+        image_filename = self.image_filenames[idx]
+        img_path = os.path.join(self.image_dir, image_filename)
+        image = Image.open(img_path).convert("RGB")
+
+        # Filter annotations for this image
+        img_annotations = self.annotations[self.annotations['Name'] == image_filename]
+        boxes = img_annotations[['xmin', 'ymin', 'xmax', 'ymax']].values
+        boxes = torch.as_tensor(boxes, dtype=torch.float32)
+
+        # Assign dummy labels (assuming 1 class, modify if needed)
+        labels = torch.ones((boxes.shape[0],), dtype=torch.int64)
+
+        # Required fields for torchvision models
+        image_id = torch.tensor([idx])
+        area = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
+        iscrowd = torch.zeros((len(boxes),), dtype=torch.int64)
+
+        target = {"boxes": boxes, "labels": labels, "image_id": image_id, "area": area, "iscrowd": iscrowd}
+
+        if self.transforms:
+            image = self.transforms(image)
+
+        return image, target
+
+def get_train_dataset_with_cords():
+    transform = transforms.Compose([
+        transforms.Resize((256, 256)),
+        transforms.ToTensor()
+    ])
+
+    return ObjectDetectionDataset(transforms=transform)
 
 def get_train_dataset():
     transform = transforms.Compose([
@@ -97,7 +148,7 @@ def get_train_dataset():
         transforms.ToTensor()
     ])
 
-    dataset = Train_Dataset(TRAIN_CSV_PATH, transform=transform)
+    dataset = Train_Dataset(transform=transform)
 
     return dataset
 
