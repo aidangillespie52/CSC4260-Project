@@ -74,3 +74,45 @@ val_dl = DataLoader(ObjectDetectionDataset(data, unique_imgs, train_inds),
                     collate_fn=custom_collate,
                     pin_memory=True if torch.cuda.is_available() else False
                     )
+
+class FaceCountDataset(Dataset):
+    def __init__(self, df, image_dir, transform=None):
+        """
+        Args:
+            df (pd.DataFrame): DataFrame with columns ['image_name', 'num_faces']
+            image_dir (str): Path to directory containing images
+            transform (callable, optional): Optional transform to be applied on an image
+        """
+        self.df = df
+        self.image_dir = image_dir
+        self.transform = transform
+    
+    def __len__(self):
+        return len(self.df)
+    
+    def __getitem__(self, idx):
+        img_name = os.path.join(self.image_dir, self.df.iloc[idx]['Name'])
+        image = Image.open(img_name).convert('RGB')
+        num_faces = torch.tensor(self.df.iloc[idx]['HeadCount'], dtype=torch.float32)
+        
+        if self.transform:
+            image = self.transform(image)
+        
+        return image, num_faces, img_name
+
+# Example usage
+transform = transforms.Compose([
+    transforms.Resize((256, 256)),
+    transforms.ToTensor()
+])
+
+def create_dataloader(df, image_dir, batch_size=1, shuffle=True):
+    dataset = FaceCountDataset(df, image_dir, transform=transform)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+
+# Splitting dataset into training and validation
+train_df, val_df = train_test_split(pd.read_csv(TRAIN_CSV_PATH), test_size=0.1, random_state=42)
+
+# Creating DataLoader instances
+simple_train_dl = create_dataloader(train_df, IMAGE_DATA_PATH)
+simple_val_dl = create_dataloader(val_df, IMAGE_DATA_PATH, shuffle=False)
