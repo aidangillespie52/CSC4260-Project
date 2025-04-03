@@ -22,13 +22,16 @@ class CNN(nn.Module):
         )
         
         self.fc_layers = nn.Sequential(
-            nn.Linear(256 * 16 * 16, 512), nn.ReLU(),  # Adjust size if needed
+            nn.Linear(256 * 16 * 16, 512),  # Corrected size
             nn.Linear(512, 128), nn.ReLU(),
             nn.Linear(128, 1)  # No rounding here!
         )
 
     def forward(self, x):
         x = self.conv_layers(x)
+        #print("After conv layers:", x.shape)  # Debugging output
         x = x.view(x.size(0), -1)  # Flatten
+        #print("After flattening:", x.shape)  # Debugging output
         x = self.fc_layers(x)
+        #print("After FC layers:", x.shape)  # Debugging output
         return x
